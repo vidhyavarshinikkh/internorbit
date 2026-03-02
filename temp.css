@@ -1,0 +1,132 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body Background */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: url("img.png") no-repeat center center/cover;
+}
+
+/* Blur Overlay */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(15px);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.75),
+    rgba(20, 20, 40, 0.65),
+    rgba(0, 0, 0, 0.8)
+  );
+  z-index: 0;
+}
+
+/* Header */
+header {
+  position: absolute;
+  top: 30px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 32px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+/* Glass Container */
+.container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 500px;
+  padding: 50px 40px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  color: white;
+}
+
+/* Form Styling */
+label {
+  display: block;
+  margin-bottom: 8px;
+  margin-top: 15px;
+  font-size: 15px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+/* Buttons */
+.buttons {
+  margin-top: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Convert Button */
+#convertBtn {
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+#convertBtn:hover {
+  background: linear-gradient(45deg, #00ffcc, #0066ff);
+  transform: translateY(-2px);
+}
+
+/* Reset Button */
+button[type="reset"] {
+  background: #444;
+  color: white;
+}
+
+button[type="reset"]:hover {
+  background:linear-gradient(45deg, #3979d1, #00d5ff);
+  transform: translateY(-2px);
+}
+
+/* Results */
+.result {
+  margin-top: 25px;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 35px 25px;
+  }
+
+  header {
+    font-size: 24px;
+  }
+}
