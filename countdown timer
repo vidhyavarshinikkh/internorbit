@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Circular Countdown</title>
+
+<style>
+/* 🌈 Animated Background */
+h1 {
+    font-size: 50px;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+
+    background: linear-gradient(-45deg, #ff416c, #ff4b2b, #1e3c72, #2a5298);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.container {
+    text-align: center;
+}
+
+input, button {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 6px;
+    border: none;
+}
+
+button {
+    background: #ff9800;
+    color: white;
+    cursor: pointer;
+}
+
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.circle {
+    position: relative;
+    width: 130px;
+    height: 130px;
+}
+
+svg {
+    transform: rotate(-90deg);
+}
+
+circle {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+}
+
+.bg {
+    stroke: rgba(255,255,255,0.2);
+}
+
+.progress {
+    stroke: #00ffea;
+    stroke-dasharray: 314;
+    stroke-dashoffset: 314;
+    transition: stroke-dashoffset 1s linear;
+}
+
+.number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.label {
+    text-align: center;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1><bold>Countdown Timer</bold></h1>
+
+    <input type="datetime-local" id="targetDate">
+    <button onclick="startCountdown()">Start</button>
+
+    <div class="countdown">
+
+        <!-- Days -->
+        <div>
+            <div class="circle">
+                <svg width="130" height="130">
+                    <circle class="bg" cx="65" cy="65" r="50"></circle>
+                    <circle id="daysProgress" class="progress" cx="65" cy="65" r="50"></circle>
+                </svg>
+                <div id="days" class="number">0</div>
+            </div>
+            <div class="label">Days</div>
+        </div>
+
+        <!-- Hours -->
+        <div>
+            <div class="circle">
+                <svg width="130" height="130">
+                    <circle class="bg" cx="65" cy="65" r="50"></circle>
+                    <circle id="hoursProgress" class="progress" cx="65" cy="65" r="50"></circle>
+                </svg>
+                <div id="hours" class="number">0</div>
+            </div>
+            <div class="label">Hours</div>
+        </div>
+
+        <!-- Minutes -->
+        <div>
+            <div class="circle">
+                <svg width="130" height="130">
+                    <circle class="bg" cx="65" cy="65" r="50"></circle>
+                    <circle id="minutesProgress" class="progress" cx="65" cy="65" r="50"></circle>
+                </svg>
+                <div id="minutes" class="number">0</div>
+            </div>
+            <div class="label">Minutes</div>
+        </div>
+
+        <!-- Seconds -->
+        <div>
+            <div class="circle">
+                <svg width="130" height="130">
+                    <circle class="bg" cx="65" cy="65" r="50"></circle>
+                    <circle id="secondsProgress" class="progress" cx="65" cy="65" r="50"></circle>
+                </svg>
+                <div id="seconds" class="number">0</div>
+            </div>
+            <div class="label">Seconds</div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+let interval;
+
+function setProgress(id, value, max) {
+    const circle = document.getElementById(id);
+    const radius = 50;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (value / max) * circumference;
+    circle.style.strokeDashoffset = offset;
+}
+
+function startCountdown() {
+
+    const targetDate = document.getElementById("targetDate").value;
+    if (!targetDate) {
+        alert("Please select date and time!");
+        return;
+    }
+
+    const targetTime = new Date(targetDate).getTime();
+    clearInterval(interval);
+
+    interval = setInterval(() => {
+
+        const now = new Date().getTime();
+        const diff = targetTime - now;
+
+        if (diff <= 0) {
+            clearInterval(interval);
+            alert("🎉 Time's Up!");
+            return;
+        }
+
+        const days = Math.floor(diff / (1000*60*60*24));
+        const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+        const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+        const seconds = Math.floor((diff % (1000*60)) / 1000);
+
+        document.getElementById("days").innerText = days;
+        document.getElementById("hours").innerText = hours;
+        document.getElementById("minutes").innerText = minutes;
+        document.getElementById("seconds").innerText = seconds;
+
+        setProgress("daysProgress", days % 30, 30);
+        setProgress("hoursProgress", hours, 24);
+        setProgress("minutesProgress", minutes, 60);
+        setProgress("secondsProgress", seconds, 60);
+
+    }, 1000);
+}
+</script>
+
+</body>
+</html>
